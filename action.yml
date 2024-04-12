@@ -1,0 +1,17 @@
+name: 'setup-deps'
+description: 'Installs statically compiled libraries needed on CI for building spatial-model-editor'
+inputs:
+  version:
+    description: 'Version of dependencies to install, if not set then latest available version is used'
+    required: false
+    default: ''
+runs:
+  using: "composite"
+  steps:
+
+    - if: runner.os == 'Windows'
+      shell: msys2 {0}
+      run: ./getlibs.sh ${{ inputs.version }}
+    - if: runner.os != 'Windows'
+      shell: bash
+      run: ./getlibs.sh ${{ inputs.version }}
